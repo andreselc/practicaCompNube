@@ -38,18 +38,18 @@ export class ApiController {
  }
 
  @Put("/directories/:id")
- findAllUsers(){
+ updateDirectories(){
 
- }
-
- @Delete("/directories/:id")
- removeUser(){
- 
  }
 
  @Patch ("/directories/:id")
- updateUser(){
+ updateDirectoriesPatch(){
  
+ }
+
+ @Delete("/directories/:id")
+ removeDirectories(@Param("id") id: string){
+  return this.apiService.deleteDirectoryById(parseInt(id));
  }
 
 }

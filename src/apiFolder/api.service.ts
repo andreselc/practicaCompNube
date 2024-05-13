@@ -71,8 +71,17 @@ export class ApiService {
  
   }
 
-  async remove(id: number){
+  async deleteDirectoryById(id: number): Promise<void> {
+    // Eliminar correos electrónicos asociados al directorio
+    await this.repoDir
+      .createQueryBuilder()
+      .delete()
+      .from('email')
+      .where('directoryId = :id', { id })
+      .execute();
 
+    // Eliminar el directorio
+    await this.repoDir.delete(id);
   }
 
 }
