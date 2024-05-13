@@ -14,26 +14,27 @@ export class ApiService {
   @InjectRepository(Email) private repoEm: Repository<Email>,){}
 
   async create(nameE: string, emailsE: string[]){
-   // Crea un nuevo directorio
-   const newDirectory = this.repoDir.create({
+     // Crea un nuevo directorio
+  const newDirectory = this.repoDir.create({
     name: nameE,
   });
 
   // Guarda el directorio en la base de datos
   const savedDirectory = await this.repoDir.save(newDirectory);
 
-  // Guarda cada correo electrónico en la base de datos y los asocia con el directorio correspondiente
-  await Promise.all(
+  const emails = await Promise.all(
     emailsE.map(async (emailAddress) => {
       const email = this.repoEm.create({
         emails: emailAddress,
         directory: savedDirectory,
       });
-      await this.repoEm.save(email);
+      return await this.repoEm.save(email); 
     }),
   );
 
-  return savedDirectory;
+
+  const emailAddresses = emails.map((email) => email.emails);
+  return { name: savedDirectory.name, emails: emailAddresses };
   
   }
 
