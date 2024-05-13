@@ -8,11 +8,12 @@ import { Body,
   Delete,
   Put, 
 } from '@nestjs/common';
+import { ApiService } from './api.service';
 
 @Controller() //Recuerda que este es como un prefijo para nuestras rutas
 export class ApiController {
 
- constructor (){}
+  constructor (private apiService: ApiService){}
 
  @Get("/status")
  getStatus(){
