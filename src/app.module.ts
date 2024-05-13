@@ -17,10 +17,10 @@ import { Email } from './apiFolder/email.entity';
   }),
    TypeOrmModule.forRoot({
     type: 'sqlite',
-    database: '',
+    database: 'db.sqlite',
     entities: [Directories, Email],
     migrations: ['dist/db/migrations/*.js'],
-    synchronize: true,
+    synchronize: false,
    }),
     ApiModule],
   controllers: [AppController],
