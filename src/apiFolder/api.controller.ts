@@ -23,6 +23,7 @@ export class ApiController {
 
  @Get("/directories")
  getDirectories(){
+  return this.apiService.findAll();
  }
 
  @Post("/directories")

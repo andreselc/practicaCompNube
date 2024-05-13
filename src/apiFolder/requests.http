@@ -13,3 +13,8 @@ content-type: application/json
            "armando@gmail.com"
    ] 
 }
+
+
+### solo retorna directorios
+GET http://localhost:3000/directories
+content-type: application/json
