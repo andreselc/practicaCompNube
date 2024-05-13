@@ -5,51 +5,48 @@ import { Body,
   Patch, 
   Param, 
   Query, 
-  Delete, 
+  Delete,
+  Put, 
 } from '@nestjs/common';
 
 
-@Controller('api') //Recuerda que este es como un prefijo para nuestras rutas
+
 export class ApiController {
 
  constructor (){}
 
- @Get("/whoami")
- whoAmI(){
+ @Get("/status")
+ getStatus(){
 
  }
 
- @Post("/signout")
- signOut(){
+ @Get("/directories")
+ getDirectories(){
  }
 
- @Post("/signup")
- async createUser(){
-
- }
-
- @Post("/signin")
- async signin(){
+ @Post("/directories")
+ postDirectories(){
 
  }
 
- @Get("/:id")
- async findUser(){
+ @Get("/directories/:id")
+ async getDirectoriesById(){
 
  }
 
- @Get()
+ @Put("/directories/:id")
  findAllUsers(){
 
  }
 
- @Delete("/:id")
+ @Delete("/directories/:id")
  removeUser(){
  
  }
 
- @Patch ("/:id")
+ @Patch ("/directories/:id")
  updateUser(){
  
  }
+
 }

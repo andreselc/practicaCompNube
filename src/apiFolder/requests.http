@@ -1,0 +1,3 @@
+### Crear un nuevo usuario
+POST http://localhost:3000/status
+content-type: application/json
