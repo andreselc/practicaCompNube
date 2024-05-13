@@ -9,7 +9,7 @@ content-type: application/json
 {
   "name":"andres lopez",
   "emails": [
-           "pao3@gmail.com",
+           "pao4@gmail.com",
            "armando@gmail.com"
    ] 
 }
@@ -20,9 +20,32 @@ GET http://localhost:3000/directories
 content-type: application/json
 
 ### solo retorna un directorio por ID
-GET http://localhost:3000/directories/2
+GET http://localhost:3000/directories/3
 content-type: application/json
 
 ### solo elimina un directorio
 DELETE http://localhost:3000/directories/2
 content-type: application/json
+
+### Solo actualiza parcialmente a un directorio
+
+PATCH http://localhost:3000/directories/3
+content-type: application/json
+
+{
+  "name": "Armando Lopez"
+}
+
+
+### Solo actualiza a un directorio
+
+PUT http://localhost:3000/directories/3
+content-type: application/json
+
+{
+  "name": "pabloLopez",
+    "emails": [
+           "Aja@gmail.com",
+           "arm@gmail.com"
+   ] 
+}

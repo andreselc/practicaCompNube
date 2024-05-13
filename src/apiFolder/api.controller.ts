@@ -10,6 +10,7 @@ import { Body,
 } from '@nestjs/common';
 import { ApiService } from './api.service';
 import { creacionObjetoDto } from './dtos/creacionObjeto.dto';
+import { Directories } from './api.entity';
 
 @Controller() //Recuerda que este es como un prefijo para nuestras rutas
 export class ApiController {
@@ -38,13 +39,13 @@ export class ApiController {
  }
 
  @Put("/directories/:id")
- updateDirectories(){
-
+ async updateDirectories(@Param("id") id: number, @Body() updatedDirectoryData: Directories){
+  return await this.apiService.updatePut(id, updatedDirectoryData);
  }
 
  @Patch ("/directories/:id")
- updateDirectoriesPatch(){
- 
+ async updateDirectoriesPatch(@Param("id") id: number, @Body() partialDirectoryData: Partial<Directories>){
+    return await this.apiService.updatePatch(id, partialDirectoryData);
  }
 
  @Delete("/directories/:id")

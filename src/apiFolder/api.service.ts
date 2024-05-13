@@ -67,8 +67,52 @@ export class ApiService {
   return directories;
   }
 
-  async update(id: number, attrs: Partial<Directories>){
+  async updatePatch(id: number, partialDirectoryData: Partial<Directories>) : Promise<Directories>{
+
+  const directory = await this.repoDir.findOneBy({ id });
+  if (!directory) {
+    throw new NotFoundException('Directorio no encontrado');
+  }
+
+  Object.assign(directory, partialDirectoryData);
+
+  return await this.repoDir.save(directory);
  
+  }
+
+  async updatePut(id: number, updatedDirectoryData: Directories): Promise<Directories> {
+    const directory = await this.repoDir
+        .createQueryBuilder('directory')
+        .leftJoinAndSelect('directory.emails', 'emails')
+        .where('directory.id = :id', { id })
+        .getOne();
+
+    if (!directory) {
+        throw new NotFoundException('Directorio no encontrado');
+    }
+
+    // Actualiza el nombre del directorio
+    directory.name = updatedDirectoryData.name;
+
+    // Actualiza los correos electrónicos asociados al directorio
+    if (updatedDirectoryData.emails) {
+        directory.emails = updatedDirectoryData.emails.map((email) => {
+            const existingEmail = directory.emails.find((existingEmail) => existingEmail.id === email.id);
+            if (existingEmail) {
+                // Si el correo ya existe en el directorio, actualiza su contenido
+                existingEmail.emails = email.emails;
+                return existingEmail;
+            } else {
+                // Si el correo no existe en el directorio, créalo
+                return this.repoEm.create({
+                    emails: email.emails,
+                    directory: directory
+                });
+            }
+        });
+    }
+
+    return await this.repoDir.save(directory);
   }
 
   async deleteDirectoryById(id: number): Promise<void> {
