@@ -6,6 +6,8 @@ import { ApiModule } from './apiFolder/api.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { dataSourceOptions } from '../db/data-source';
 import { APP_PIPE } from '@nestjs/core';
+import { Directories } from './apiFolder/api.entity';
+import { Email } from './apiFolder/email.entity';
 
 @Module({
   imports: [
@@ -16,7 +18,7 @@ import { APP_PIPE } from '@nestjs/core';
    TypeOrmModule.forRoot({
     type: 'sqlite',
     database: '',
-    entities: [],
+    entities: [Directories, Email],
     migrations: ['dist/db/migrations/*.js'],
     synchronize: true,
    }),

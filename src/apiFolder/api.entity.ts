@@ -1,5 +1,6 @@
 //Decoradores
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
+import { Email } from "./email.entity";
 
 @Entity()
 export class Directories {
@@ -8,10 +9,12 @@ export class Directories {
   id: number;
 
   @Column({ default: true })
-  name: boolean;
+  name: string;
 
   @Column()
   email: string;
 
-  
+  @OneToMany(() => Email, email => email.directory)
+  emails: Email[];
+
 }
