@@ -9,15 +9,14 @@ import { Body,
   Put, 
 } from '@nestjs/common';
 
-
-
+@Controller() //Recuerda que este es como un prefijo para nuestras rutas
 export class ApiController {
 
  constructor (){}
 
  @Get("/status")
  getStatus(){
-
+   return "pong"
  }
 
  @Get("/directories")
