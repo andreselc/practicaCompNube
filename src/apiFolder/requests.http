@@ -1,3 +1,15 @@
-### Crear un nuevo usuario
+### solo devuelve status
 GET http://localhost:3000/status
 content-type: application/json
+
+### solo crea directorios
+POST http://localhost:3000/directories
+content-type: application/json
+
+{
+  "name":"andres lopez",
+  "emails": [
+           "rjrodrig@gmail.com",
+           "armando@gmail.com"
+   ] 
+}

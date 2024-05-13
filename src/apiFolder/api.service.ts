@@ -26,7 +26,7 @@ export class ApiService {
   await Promise.all(
     emailsE.map(async (emailAddress) => {
       const email = this.repoEm.create({
-        address: emailAddress,
+        emails: emailAddress,
         directory: savedDirectory,
       });
       await this.repoEm.save(email);

@@ -8,7 +8,7 @@ export class Email {
   id: number;
 
   @Column()
-  address: string;
+  emails: string;
 
   @ManyToOne(() => Directories, directory => directory.emails)
   directory: Directories;

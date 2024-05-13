@@ -11,9 +11,6 @@ export class Directories {
   @Column({ default: true })
   name: string;
 
-  @Column()
-  email: string;
-
   @OneToMany(() => Email, email => email.directory)
   emails: Email[];
 
