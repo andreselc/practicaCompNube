@@ -34,12 +34,22 @@ export class ApiService {
   
   }
 
-  findOne(id:number) {
-    if (!id){
-      return null;
+  async findOne(id: number): Promise<Directories> {
+    const directory = await this.repoDir
+        .createQueryBuilder('directory')
+        .leftJoinAndSelect('directory.emails', 'email')
+        .select(['directory.id', 'directory.name', 'GROUP_CONCAT(email.emails) AS emails'])
+        .where('directory.id = :id', { id })
+        .groupBy('directory.id')
+        .addGroupBy('directory.name')
+        .getRawOne();
+
+    if (directory) {
+        directory.emails = directory.emails.split(',');
     }
-    return this.repoDir.findOneBy({ id });
-  }
+
+    return directory;
+}
 
   async findAll(): Promise<Directories[]> {
     const directories = await this.repoDir
@@ -50,8 +60,7 @@ export class ApiService {
     .addGroupBy('directory.name')
     .getRawMany();
 
-  // Parse emails string into array
-  directories.forEach(directory => {
+    directories.forEach(directory => {
     directory.emails = directory.emails.split(',');
   });
 

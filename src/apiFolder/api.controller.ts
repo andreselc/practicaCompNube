@@ -33,8 +33,8 @@ export class ApiController {
  }
 
  @Get("/directories/:id")
- async getDirectoriesById(){
-
+ async getDirectoriesById(@Param("id") id: number){
+  return this.apiService.findOne(id);
  }
 
  @Put("/directories/:id")
