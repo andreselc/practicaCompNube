@@ -1,32 +1,29 @@
-FROM node:18.0.0-alpine3.14 as builder
-ENV NODE_ENV build
+# Use the official Node.js image as a base
+FROM node:17-alpine
 
-WORKDIR /home/node
+# Set the working directory inside the container
+WORKDIR /app
 
-COPY . /home/node
-# Cambia el propietario de los archivos copiados
-RUN chown -R node:node /home/node
+# Copy package.json and package-lock.json
+COPY package*.json ./
 
-USER node
-RUN npm ci \
-    && npm run build \
-    && npx tsc -p tsconfig.build.json \
-    && npm prune --production
+# Install dependencies
+RUN npm install
 
+# Install sqlite3
+RUN npm install && npm install sqlite3 --save
 
+# Install nest CLI
+RUN npm install --save-dev @nestjs/cli
 
-# ---
+# Copy the rest of the application code
+COPY . .
 
-FROM node:18.0.0-alpine3.14
+# Build the application
+RUN npm run build
 
-ENV NODE_ENV prod
-USER node
+# Expose the port your app runs on
+EXPOSE 3000
 
-WORKDIR /home/node
-
-COPY --from=builder --chown=node:node /home/node/package*.json /home/node/
-COPY --from=builder --chown=node:node /home/node/node_modules/ /home/node/node_modules/
-COPY --from=builder --chown=node:node /home/node/tsconfig*.json /home/node/dist/
-COPY --from=builder --chown=node:node /home/node/dist/ /home/node/dist/
-
-CMD ["node", "dist/src/main.js"]
+# Command to run the application
+CMD ["node", "dist/src/main"]
