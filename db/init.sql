@@ -1,0 +1,3 @@
+-- CREATE DATABASE IF NOT EXISTS codrrdb
+SELECT 'CREATE DATABASE nube'
+WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'nube')\gexec

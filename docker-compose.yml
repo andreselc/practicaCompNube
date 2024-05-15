@@ -1,19 +1,15 @@
-version: "3"
-services:
-  app:
-    build: .
-    ports:
-      - "3000:3000"
-    depends_on:
-      - sqlite
-    environment:
-      - NODE_ENV=production
+version: '3.1'
 
-  sqlite:
-    image: nouchka/sqlite3:latest
-    volumes:
-      - ./database:/var/lib/sqlite/data
+services:
+  codrr_pg:
+    image: postgres:15.1
+    container_name: codrr_pg
+    restart: always
     environment:
-      - SQLITE_USER=sqlite
-      - SQLITE_PASSWORD=sqlite
-      - SQLITE_DB=sqlite
+      POSTGRES_DB: nube
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: dummypass
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 5433:5432

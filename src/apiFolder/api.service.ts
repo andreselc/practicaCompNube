@@ -51,21 +51,20 @@ export class ApiService {
     return directory;
 }
 
-  async findAll(): Promise<Directories[]> {
-    const directories = await this.repoDir
+async findAll(): Promise<any[]> {
+  const directories = await this.repoDir
     .createQueryBuilder('directory')
     .leftJoinAndSelect('directory.emails', 'email')
-    .select(['directory.id', 'directory.name', 'GROUP_CONCAT(email.emails) AS emails'])
+    .select(['directory.id', 'directory.name', 'string_agg(email.emails, \',\') AS emails'])
     .groupBy('directory.id')
     .addGroupBy('directory.name')
     .getRawMany();
 
-    directories.forEach(directory => {
-    directory.emails = directory.emails.split(',');
-  });
-
-  return directories;
-  }
+  return directories.map(dir => ({
+    name: dir.directory_name,
+    emails: dir.emails.split(',')
+  }));
+}
 
   async updatePatch(id: number, partialDirectoryData: Partial<Directories>) : Promise<Directories>{
 
