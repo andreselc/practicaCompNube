@@ -9,8 +9,8 @@ const ormconfig: TypeOrmModuleOptions = {
   host: 'codrr_pg',
   port: 5432,
   database: 'nube',
-  entities: ['./src/apiFolder/*.entity{.ts,.js}'],
-  migrations: ['./database/migrations/*{.ts,.js}'],
+  entities: ['dist/src/apiFolder/*.entity.js'],
+  migrations: ['dist/src/database/migrations/*.js'],
   synchronize: false,
   autoLoadEntities: true,
 };
