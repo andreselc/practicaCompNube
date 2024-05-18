@@ -38,34 +38,41 @@ export class ApiService {
     const directory = await this.repoDir
       .createQueryBuilder('directory')
       .leftJoinAndSelect('directory.emails', 'email')
-      .select(['directory.id', 'directory.name', 'string_agg(email.emails, \',\') AS emails'])
       .where('directory.id = :id', { id })
-      .groupBy('directory.id')
-      .addGroupBy('directory.name')
-      .getRawOne();
-  
+      .getOne();
+
     if (directory) {
       return {
-        name: directory.directory_name,
-        emails: directory.emails.split(',')
+        id: directory.id,
+        name: directory.name,
+        emails: directory.emails ? directory.emails.map(email => email.emails) : [], 
       };
     }
-  }  
+    return null;
+  }
 
-async findAll(): Promise<any[]> {
-  const directories = await this.repoDir
-    .createQueryBuilder('directory')
-    .leftJoinAndSelect('directory.emails', 'email')
-    .select(['directory.id', 'directory.name', 'string_agg(email.emails, \',\') AS emails'])
-    .groupBy('directory.id')
-    .addGroupBy('directory.name')
-    .getRawMany();
+  async findAll(page: number = 1, limit: number = 10): Promise<any> {
+    const [results, total] = await this.repoDir
+      .createQueryBuilder('directory')
+      .leftJoinAndSelect('directory.emails', 'email')
+      .skip((page - 1) * limit)
+      .take(limit)
+      .getManyAndCount();
 
-  return directories.map(dir => ({
-    name: dir.directory_name,
-    emails: dir.emails.split(',')
-  }));
-}
+    const totalPages = Math.ceil(total / limit);
+
+    return {
+      count: total,
+      next: page < totalPages ? `?page=${page + 1}&limit=${limit}` : null,
+      previous: page > 1 ? `?page=${page - 1}&limit=${limit}` : null,
+      results: results.map(dir => ({
+        id: dir.id,
+        name: dir.name,
+        emails: dir.emails ? dir.emails.map(email => email.emails) : [], // Asumiendo que `email.address` es la propiedad del email
+      })),
+    };
+  }
+
 
   async updatePatch(id: number, partialDirectoryData: Partial<Directories>) : Promise<Directories>{
 

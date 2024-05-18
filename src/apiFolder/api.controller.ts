@@ -23,9 +23,9 @@ export class ApiController {
  }
 
  @Get("/directories")
- getDirectories(){
-  return this.apiService.findAll();
- }
+ getDirectories(@Query('page') page: number, @Query('limit') limit: number) {
+    return this.apiService.findAll(page, limit);
+  }
 
  @Post("/directories")
  async postDirectories(@Body() directory: creacionObjetoDto ){
@@ -34,9 +34,9 @@ export class ApiController {
  }
 
  @Get("/directories/:id")
- async getDirectoriesById(@Param("id") id: number){
+ async getDirectoriesById(@Param('id') id: number) {
   return this.apiService.findOne(id);
- }
+}
 
  @Put("/directories/:id")
  async updateDirectories(@Param("id") id: number, @Body() updatedDirectoryData: Directories){
