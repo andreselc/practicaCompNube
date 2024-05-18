@@ -7,7 +7,7 @@ POST http://localhost:3000/directories
 content-type: application/json
 
 {
-  "name":"andres lopez",
+  "name":"Paola Ascanio",
   "emails": [
            "pao4@gmail.com",
            "armando@gmail.com"

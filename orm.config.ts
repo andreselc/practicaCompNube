@@ -11,8 +11,9 @@ const ormconfig: TypeOrmModuleOptions = {
   database: 'nube',
   entities: ['dist/src/apiFolder/*.entity.js'],
   migrations: ['dist/src/database/migrations/*.js'],
-  synchronize: false,
+  synchronize: true,
   autoLoadEntities: true,
+  migrationsRun: true,
 };
 
 export default ormconfig;

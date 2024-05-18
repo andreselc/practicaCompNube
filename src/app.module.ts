@@ -4,10 +4,8 @@ import { ConfigModule} from "@nestjs/config"
 import { AppService } from './app.service';
 import { ApiModule } from './apiFolder/api.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { dataSourceOptions } from '../db/data-source';
 import { APP_PIPE } from '@nestjs/core';
-import { Directories } from './apiFolder/api.entity';
-import { Email } from './apiFolder/email.entity';
+
 import dbConfig from '../orm.config';
 
 
