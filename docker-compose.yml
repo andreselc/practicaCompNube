@@ -11,5 +11,16 @@ services:
       POSTGRES_PASSWORD: dummypass
     volumes:
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: api-nube
     ports:
-      - 5433:5432
+      - 3000:3000
+    environment:
+      NODE_ENV: production
+    depends_on:
+      - codrr_pg
+    command: npm run start:dev

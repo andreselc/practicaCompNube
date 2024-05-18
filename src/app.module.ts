@@ -8,31 +8,23 @@ import { dataSourceOptions } from '../db/data-source';
 import { APP_PIPE } from '@nestjs/core';
 import { Directories } from './apiFolder/api.entity';
 import { Email } from './apiFolder/email.entity';
+import dbConfig from '../orm.config';
+
 
 @Module({
   imports: [
     ConfigModule.forRoot({
     isGlobal: true,
-    envFilePath: `.env.${process.env.NODE_ENV}` //Para Development
+    envFilePath: `.env.${process.env.NODE_ENV}` 
   }),
-  TypeOrmModule.forRoot({ 
-    type: 'postgres',
-     host: 'localhost',
-    port: 5432,
-    username: 'user',
-    password: 'dummypass', 
-    database: 'nube',
-    entities: [Directories, Email], 
-    synchronize: true,
-    autoLoadEntities: true, 
-    }),
+  TypeOrmModule.forRoot(dbConfig),
     ApiModule],
-  controllers: [AppController],
-  providers: [AppService,
+    controllers: [AppController],
+    providers: [AppService,
     { //Global Pipe
       provide: APP_PIPE,
       useValue: new ValidationPipe({
-        whitelist:true,
+      whitelist:true,
       })
     }
   ],
