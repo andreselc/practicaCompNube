@@ -1,0 +1,66 @@
+diff --git a/docker-compose.yml b/docker-compose.yml
+index d099d34..491534d 100644
+--- a/docker-compose.yml
++++ b/docker-compose.yml
+@@ -9,8 +9,14 @@ services:
+       POSTGRES_DB: nube
+       POSTGRES_USER: user
+       POSTGRES_PASSWORD: dummypass
++    healthcheck:
++      test: ["CMD", "pg_isready"]
++      start_period: 10s
++    # Incecesario 
++    # volumes:
++    #  - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+     volumes:
+-      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
++      - db-data:/var/lib/postgresql/data
+ 
+   api:
+     build:
+@@ -22,5 +28,11 @@ services:
+     environment:
+       NODE_ENV: production
+     depends_on:
+-      - codrr_pg
+-    command: npm run start:dev
+\ No newline at end of file
++      codrr_pg:
++        condition: service_healthy
++        restart: true
++    # Inecesario ya se define en el dockerfile
++    # command: npm run start:dev
++
++volumes:
++  db-data: {} 
+\ No newline at end of file
+diff --git a/dockerfile b/dockerfile
+index a5e60bc..f89aee5 100644
+--- a/dockerfile
++++ b/dockerfile
+@@ -1,7 +1,20 @@
+-FROM node:18 
++FROM node:18 as build
+ WORKDIR /app
+ COPY package*.json ./
+ RUN npm install 
+ COPY . . 
+-RUN npm run build 
+-CMD [ "npm", "run", "start:dev" ]
+\ No newline at end of file
++# ¿Para que si al final no usas la parte de producción?
++# RUN npm run build
++# CMD [ "npm", "run", "start:dev" ]
++
++FROM node:18
++
++COPY --from=build /app/dist /app
++
++COPY package*.json ./
++
++RUN npm install --production
++
++WORKDIR /app
++
++CMD [ "node", "src/main" ]
+\ No newline at end of file
