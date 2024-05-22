@@ -12,9 +12,6 @@ services:
     healthcheck:
       test: ["CMD", "pg_isready"]
       start_period: 10s
-    # Incecesario 
-    # volumes:
-    #  - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
     volumes:
       - db-data:/var/lib/postgresql/data
 
@@ -31,8 +28,6 @@ services:
       codrr_pg:
         condition: service_healthy
         restart: true
-    # Inecesario ya se define en el dockerfile
-    # command: npm run start:dev
 
 volumes:
   db-data: {} 

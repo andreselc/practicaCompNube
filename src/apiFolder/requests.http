@@ -7,10 +7,10 @@ POST http://localhost:3000/directories
 content-type: application/json
 
 {
-  "name":"Paola Ascanio",
+  "name":"Andrés López",
   "emails": [
-           "pao4@gmail.com",
-           "armando@gmail.com"
+           "andres5@gmail.com",
+           "andres5@est.ucab.edu.ve"
    ] 
 }
 
@@ -24,7 +24,7 @@ GET http://localhost:3000/directories/1
 content-type: application/json
 
 ### solo elimina un directorio
-DELETE http://localhost:3000/directories/2
+DELETE http://localhost:3000/directories/4
 content-type: application/json
 
 ### Solo actualiza parcialmente a un directorio
@@ -33,7 +33,7 @@ PATCH http://localhost:3000/directories/1
 content-type: application/json
 
 {
-  "name": "Armando Lopez"
+  "name": "Sabrina Ardiles"
 }
 
 
