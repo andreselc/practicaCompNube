@@ -1,4 +1,5 @@
 .env.development
+db_password.txt
 
 # compiled output
 /dist

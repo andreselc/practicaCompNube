@@ -1,0 +1,57 @@
+##Se agrega el volumen para la b/d usando NFS como driver
+##Este apunta al servidor NFS nfssrv01 y al directorio /home/docker-vols/codrr-db
+version: '3.1'
+volumes:
+  db:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: "addr=nfssrv01,rw"
+      device: ":/home/docker-vols/codrr-db"
+
+## Red overlay para que los servicios se comuniquen entre sí en un cluster Swarm.
+## Se crea un secreto para la contraseña de la b/d, que será leída desde el txt en el host.
+networks:
+  wpnet:
+    driver: overlay
+
+secrets:
+  db_password:
+    file: ./db_password.txt
+
+   ##Con el run/secrets/db_password, la contraseña se lee desde el secreto.
+   ## en lugar de estar expuesta en el archivo.
+services:
+  db:
+    image: postgres:15.1
+    restart: always
+
+    networks:
+      - wpnet
+    environment:
+      POSTGRES_DB: nube
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD_FILE: "/run/secrets/db_password"
+    volumes:
+      - db:/var/lib/postgresql/data
+    secrets:
+      - db_password
+
+##Se desean desplegar dos réplicas del servicio api, que se comunicarán con la b/d.
+  api:
+    image: andreselc2015/nubev2:latest
+    deploy:
+      replicas: 2
+    ports:
+      - 3000:3000
+    networks:
+     - wpnet
+    environment:
+      NODE_ENV: production
+      POSTGRES_DB: nube
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD_FILE: "/run/secrets/db_password"
+    depends_on:
+      - db
+    secrets:
+      - db_password
