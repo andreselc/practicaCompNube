@@ -4,9 +4,10 @@ config();
 
 const ormconfig: TypeOrmModuleOptions = {
   type: 'postgres',
-  username: 'user',
-  password: 'dummypass',
+  username: 'postgres',
+  password: '210302',
   host: 'codrr_pg',
+  //host:'localhost',
   port: 5432,
   database: 'nube',
   entities: ['dist/src/apiFolder/*.entity.js'],

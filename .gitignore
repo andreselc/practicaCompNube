@@ -1,4 +1,4 @@
-.env.development
+.env
 db_password.txt
 
 # compiled output

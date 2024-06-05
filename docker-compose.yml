@@ -7,8 +7,8 @@ services:
     restart: always
     environment:
       POSTGRES_DB: nube
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: dummypass
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 210302
     healthcheck:
       test: ["CMD", "pg_isready"]
       start_period: 10s
