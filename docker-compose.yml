@@ -27,7 +27,9 @@ services:
     depends_on:
       codrr_pg:
         condition: service_healthy
-        restart: true
+    volumes:
+      - ./.env:/app/.env # Montar el archivo .env dentro del contenedor
+    restart: always
 
 volumes:
   db-data: {} 

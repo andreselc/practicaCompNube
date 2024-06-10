@@ -4,12 +4,11 @@ config();
 
 const ormconfig: TypeOrmModuleOptions = {
   type: 'postgres',
-  username: 'postgres',
-  password: '210302',
-  host: 'codrr_pg',
-  //host:'localhost',
+  username: process.env.POSTGRES_USER,
+  password: process.env.POSTGRES_PASSWORD,
+  host: process.env.POSTGRES_HOST,
   port: 5432,
-  database: 'nube',
+  database: process.env.POSTGRES_DATABASE,
   entities: ['dist/src/apiFolder/*.entity.js'],
   migrations: ['dist/src/database/migrations/*.js'],
   synchronize: false,
