@@ -2,6 +2,7 @@
 db_password.txt
 
 # compiled output
+/dist
 /node_modules
 /build
 
